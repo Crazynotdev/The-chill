@@ -1,6 +1,8 @@
 import 'server-only';
-import { createServerClient } from '@supabase/ssr';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+
+type CookieToSet = { name: string; value: string; options: CookieOptions };
 
 /** Client serveur lié à la session de l'utilisateur (cookies) : la RLS s'applique. */
 export function createSupabaseServer() {
@@ -10,7 +12,7 @@ export function createSupabaseServer() {
       getAll() {
         return store.getAll();
       },
-      setAll(list) {
+      setAll(list: CookieToSet[]) {
         try {
           list.forEach(({ name, value, options }) => store.set(name, value, options));
         } catch {
