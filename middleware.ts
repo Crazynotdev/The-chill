@@ -1,22 +1,25 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { createServerClient } from '@supabase/ssr';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 const PROTECTED = ['/dashboard', '/tickets', '/scan', '/settings', '/audit', '/verify'];
+
+type CookieToSet = { name: string; value: string; options: CookieOptions };
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
     cookies: {
-      getAll: () => request.cookies.getAll(),
-      setAll: (list) => {
+      getAll() {
+        return request.cookies.getAll();
+      },
+      setAll(list: CookieToSet[]) {
         list.forEach(({ name, value }) => request.cookies.set(name, value));
         response = NextResponse.next({ request });
         list.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
       },
     },
   });
-
   // getUser() valide le JWT auprès de Supabase Auth (contrairement à getSession()).
   const {
     data: { user },
