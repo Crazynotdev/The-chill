@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Palette NUIT SANS FIN : noir profond, rouge vif (affiche officielle). */
+:root {
+  --bg: 10 4 6;
+  --surface: 22 10 13;
+  --line: 52 28 34;
+  --ink: 246 242 243;
+  --mute: 160 148 152;
+  --accent: 225 29 46;
+  --accent2: 255 96 104;
+  --ok: 34 197 94;
+  --warn: 249 115 22;
+  --bad: 239 68 68;
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--ink));
+  min-height: 100%;
+}
+
+body {
+  background-image: radial-gradient(60rem 30rem at 8% -10%, rgb(var(--accent) / 0.16), transparent),
+    radial-gradient(40rem 25rem at 100% 0%, rgb(var(--accent) / 0.07), transparent);
+  background-attachment: fixed;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-line bg-surface/80 p-5 backdrop-blur;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-gradient-to-r from-accent to-accent2 text-white hover:brightness-110 active:scale-[.98];
+  }
+  .btn-ghost {
+    @apply btn border border-line text-ink hover:bg-white/5;
+  }
+  .btn-danger {
+    @apply btn border border-bad/40 text-bad hover:bg-bad/10;
+  }
+  .input {
+    @apply w-full rounded-xl border border-line bg-bg/60 px-4 py-3 text-ink placeholder:text-mute focus:border-accent focus:outline-none;
+  }
+  .label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-mute;
+  }
+  .th {
+    @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-mute;
+  }
+  .td {
+    @apply px-4 py-3 text-sm;
+  }
+}
